@@ -114,13 +114,13 @@ public class App {
         System.out.println("\n=== Adding a new claim ===");
         try {
             String claimId = generateClaimId();
-            System.out.print("Enter claim date (yyyy-MM-dd): ");
+            System.out.print("Enter claim date (yyyy-mm-dd): ");
             Date claimDate = dateFormat.parse(scanner.nextLine());
             System.out.print("Enter insured person ID: ");
             String insuredPersonId = scanner.nextLine();
             System.out.print("Enter insurance card number: ");
             String cardNumber = scanner.nextLine();
-            System.out.print("Enter exam date (yyyy-MM-dd): ");
+            System.out.print("Enter exam date (yyyy-mm-dd): ");
             Date examDate = dateFormat.parse(scanner.nextLine());
             System.out.print("Enter claim amount: ");
             double claimAmount = scanner.nextDouble();
