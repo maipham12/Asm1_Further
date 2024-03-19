@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Utility class for file operations.
- * @author Your Full Name - Your Student ID
+ * @author Pham Thanh Mai - s3978365
  */
 public class FileUtil {
 

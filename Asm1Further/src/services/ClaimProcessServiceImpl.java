@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of ClaimProcessManager for managing insurance claims.
- * @author Your Full Name - Your Student ID
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
  */
 public class ClaimProcessServiceImpl implements ClaimProcessManager {
     private List<Claim> claims;

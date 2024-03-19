@@ -4,8 +4,8 @@ import models.Claim;
 import java.util.List;
 
 /**
- * Interface for managing insurance claims.
- * @author Your Full Name - Your Student ID
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
  */
 public interface ClaimProcessManager {
     void add(Claim claim);

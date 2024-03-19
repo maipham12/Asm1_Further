@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class representing a policy holder, which is a specific type of customer.
- * @author Your Full Name - Your Student ID
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
  */
 public class PolicyHolder extends Customer {
     private List<Dependent> dependents;

@@ -14,6 +14,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
+ */
+
 public class App {
 
     private static final String CUSTOMERS_FILE_PATH = "C:\\ClaimsManagementSystem\\Asm1Further\\customers.txt";

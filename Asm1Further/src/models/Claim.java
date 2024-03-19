@@ -2,6 +2,11 @@ package models;
 
 import java.util.Date;
 
+/**
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
+ */
+
 public class Claim {
 
     private String claimId;

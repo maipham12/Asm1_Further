@@ -3,8 +3,8 @@ package models;
 import java.util.Date;
 
 /**
- * Class representing an insurance card in the insurance claims management system.
- * @author Your Full Name - Your Student ID
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
  */
 public class InsuranceCard {
     private String cardNumber;

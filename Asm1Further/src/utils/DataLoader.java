@@ -17,7 +17,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Utility class to load data from text files into the application.
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
  */
 public class DataLoader {
 

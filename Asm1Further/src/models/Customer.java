@@ -1,9 +1,10 @@
 package models;
 
 /**
- * Abstract class representing a customer in the insurance claims management system.
- * @author Your Full Name - Your Student ID
+ * Utility class for file operations.
+ * @author Pham Thanh Mai - s3978365
  */
+
 public abstract class Customer {
     protected String id;
     protected String fullName;
