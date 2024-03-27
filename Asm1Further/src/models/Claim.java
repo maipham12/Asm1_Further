@@ -3,25 +3,37 @@ package models;
 import java.util.Date;
 
 /**
- * Utility class for file operations.
- * @author Pham Thanh Mai - s3978365
+ * Represents an insurance claim in the insurance system.
  */
-
 public class Claim {
+    private String claimId; // Unique identifier for the claim, with format f-numbers; 10 numbers
+    private Date claimDate; // The date the claim was filed
+    private Customer insuredPerson; // The customer (policy holder or dependent) the claim is for
+    private InsuranceCard insuranceCard; // The insurance card used for the claim
+    private Date examDate; // The date of the medical examination or event the claim is for
+    private double claimAmount; // The amount being claimed
+    private Status status; // The current status of the claim (NEW, PROCESSING, DONE)
+    private String receiverBankingInfo; // Banking information for where the claim amount should be sent
 
-    private String claimId;
-    private Date claimDate;
-    private Customer insuredPerson;
-    private InsuranceCard insuranceCard;
-    private Date examDate;
-    private double claimAmount;
-    private Status status;
-    private String receiverBankingInfo;
-
+    /**
+     * Enumeration for the possible statuses of a claim.
+     */
     public enum Status {
         NEW, PROCESSING, DONE
     }
 
+    /**
+     * Constructs a new Claim instance.
+     *
+     * @param claimId The unique identifier for the claim.
+     * @param claimDate The date the claim was filed.
+     * @param insuredPerson The customer the claim is for.
+     * @param insuranceCard The insurance card used for the claim.
+     * @param examDate The date of the examination/event.
+     * @param claimAmount The amount being claimed.
+     * @param status The current status of the claim.
+     * @param receiverBankingInfo The banking information for the claim payout.
+     */
     public Claim(String claimId, Date claimDate, Customer insuredPerson, InsuranceCard insuranceCard,
                  Date examDate, double claimAmount, Status status, String receiverBankingInfo) {
         this.claimId = claimId;
@@ -33,6 +45,8 @@ public class Claim {
         this.status = status;
         this.receiverBankingInfo = receiverBankingInfo;
     }
+
+    // Getters and Setters
 
     public String getClaimId() {
         return claimId;
@@ -103,8 +117,8 @@ public class Claim {
         return "Claim{" +
                 "claimId='" + claimId + '\'' +
                 ", claimDate=" + claimDate +
-                ", insuredPerson=" + insuredPerson +
-                ", insuranceCard=" + insuranceCard +
+                ", insuredPerson=" + insuredPerson.getFullName() +
+                ", insuranceCard=" + insuranceCard.getCardNumber() +
                 ", examDate=" + examDate +
                 ", claimAmount=" + claimAmount +
                 ", status=" + status +

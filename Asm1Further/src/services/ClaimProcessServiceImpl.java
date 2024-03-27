@@ -1,52 +1,78 @@
 package services;
 
 import models.Claim;
+import models.Customer;
+import models.InsuranceCard;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Utility class for file operations.
- * @author Pham Thanh Mai - s3978365
- */
 public class ClaimProcessServiceImpl implements ClaimProcessManager {
-    private List<Claim> claims;
 
-    public ClaimProcessServiceImpl() {
-        this.claims = new ArrayList<>();
+    private final ConcurrentHashMap<String, Claim> claims = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Customer> customers = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, InsuranceCard> insuranceCards = new ConcurrentHashMap<>();
+
+    @Override
+    public void addCustomer(Customer customer) {
+        if (customer != null && customer.getId() != null) {
+            customers.put(customer.getId(), customer);
+        }
+    }
+
+    @Override
+    public Customer getCustomerById(String customerId) {
+        return customerId != null ? customers.get(customerId) : null;
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return new ArrayList<>(customers.values());
+    }
+
+    @Override
+    public void addInsuranceCard(InsuranceCard insuranceCard) {
+        if (insuranceCard != null && insuranceCard.getCardNumber() != null) {
+            insuranceCards.put(insuranceCard.getCardNumber(), insuranceCard);
+        }
+    }
+
+    @Override
+    public InsuranceCard getInsuranceCardByNumber(String cardNumber) {
+        return cardNumber != null ? insuranceCards.get(cardNumber) : null;
+    }
+
+    @Override
+    public List<InsuranceCard> getAllInsuranceCards() {
+        return new ArrayList<>(insuranceCards.values());
     }
 
     @Override
     public void add(Claim claim) {
-        claims.add(claim);
+        if (claim != null && claim.getClaimId() != null) {
+            claims.put(claim.getClaimId(), claim);
+        }
     }
 
     @Override
     public void update(Claim claim) {
-        for (int i = 0; i < claims.size(); i++) {
-            if (claims.get(i).getClaimId().equals(claim.getClaimId())) {
-                claims.set(i, claim);
-                return;
-            }
+        if (claim != null && claim.getClaimId() != null && claims.containsKey(claim.getClaimId())) {
+            claims.replace(claim.getClaimId(), claim);
         }
     }
 
     @Override
-    public void delete(String claimId) {
-        claims.removeIf(claim -> claim.getClaimId().equals(claimId));
+    public boolean delete(String claimId) {
+        return claimId != null && claims.remove(claimId) != null;
     }
 
     @Override
     public Claim getOne(String claimId) {
-        for (Claim claim : claims) {
-            if (claim.getClaimId().equals(claimId)) {
-                return claim;
-            }
-        }
-        return null;
+        return claimId != null ? claims.get(claimId) : null;
     }
 
     @Override
     public List<Claim> getAll() {
-        return claims;
+        return new ArrayList<>(claims.values());
     }
 }

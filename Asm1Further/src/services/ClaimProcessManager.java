@@ -1,16 +1,30 @@
 package services;
 
 import models.Claim;
+import models.Customer;
+import models.InsuranceCard;
 import java.util.List;
 
-/**
- * Utility class for file operations.
- * @author Pham Thanh Mai - s3978365
- */
 public interface ClaimProcessManager {
+    // ... existing methods ...
+
+    void addCustomer(Customer customer);
+
+    Customer getCustomerById(String customerId);
+
+    List<Customer> getAllCustomers();
+
+    void addInsuranceCard(InsuranceCard insuranceCard);
+
+    InsuranceCard getInsuranceCardByNumber(String cardNumber);
+
     void add(Claim claim);
+
     void update(Claim claim);
-    void delete(String claimId);
+    boolean delete(String claimId);
     Claim getOne(String claimId);
     List<Claim> getAll();
+
+    List<InsuranceCard> getAllInsuranceCards();
+    // Any other methods needed for your implementation
 }

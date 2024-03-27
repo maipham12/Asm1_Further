@@ -1,63 +1,62 @@
 package models;
 
 /**
- * Utility class for file operations.
- * @author Pham Thanh Mai - s3978365
+ * Abstract class representing a customer in the insurance system.
+ * This class provides a common foundation for different types of customers.
  */
-
 public abstract class Customer {
-    protected String id;
-    protected String fullName;
-    protected InsuranceCard insuranceCard;
+    protected String id; // Customer ID with format c-numbers; 7 numbers
+    protected String fullName; // Full name of the customer
+    protected InsuranceCard insuranceCard; // Associated insurance card
 
-    // Default constructor
-    public Customer() {
-        // Initialize any default values if needed
-    }
-
-    // Constructor with parameters
+    /**
+     * Constructs a new Customer instance.
+     *
+     * @param id The customer's ID.
+     * @param fullName The full name of the customer.
+     */
     public Customer(String id, String fullName) {
         this.id = id;
         this.fullName = fullName;
     }
 
-    // Setter for id
-    public void setId(String id) {
-        this.id = id;
-    }
+    // Getters and Setters
 
-    // Setter for fullName
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    // Getter for id
     public String getId() {
         return id;
     }
 
-    // Getter for fullName
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getFullName() {
         return fullName;
     }
 
-    // Getter for insuranceCard
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public InsuranceCard getInsuranceCard() {
         return insuranceCard;
     }
 
-    // Setter for insuranceCard
     public void setInsuranceCard(InsuranceCard insuranceCard) {
         this.insuranceCard = insuranceCard;
     }
 
-    // Custom toString() method to provide a readable representation of the Customer object
+    /**
+     * Provides a string representation of the customer.
+     *
+     * @return A string describing the customer.
+     */
     @Override
     public String toString() {
         return "Customer{" +
                 "id='" + id + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", insuranceCard=" + insuranceCard +
+                ", insuranceCard=" + (insuranceCard != null ? insuranceCard.getCardNumber() : "None") +
                 '}';
     }
 }

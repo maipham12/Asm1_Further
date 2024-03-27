@@ -1,181 +1,182 @@
 package app;
 
-import models.Claim;
-import models.Customer;
-import models.InsuranceCard;
+import models.*;
+import services.ClaimProcessManager;
+import services.ClaimProcessServiceImpl;
 import utils.DataLoader;
+import utils.FileUtil;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Utility class for file operations.
- * @author Pham Thanh Mai - s3978365
- */
-
 public class App {
 
-    private static final String CUSTOMERS_FILE_PATH = "C:\\ClaimsManagementSystem\\Asm1Further\\customers.txt";
-    private static final String INSURANCE_CARDS_FILE_PATH = "C:\\ClaimsManagementSystem\\Asm1Further\\insuranceCards.txt";
-    private static final String CLAIMS_FILE_PATH = "C:\\ClaimsManagementSystem\\Asm1Further\\claims.txt";
-
-    private static List<Customer> customers;
-    private static List<InsuranceCard> insuranceCards;
-    private static List<Claim> claims;
-
+    private static final ClaimProcessManager claimProcessManager = new ClaimProcessServiceImpl();
+    private static final Scanner scanner = new Scanner(System.in);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String[] args) {
-        try {
-            loadInitialData();
-            runApplication();
-        } catch (Exception e) {
-            System.err.println("Error during application startup: " + e.getMessage());
-            e.printStackTrace();
-        }
+        loadInitialData();
+        runApplication();
     }
 
-    private static void loadInitialData() throws ParseException {
-        try {
-            customers = DataLoader.loadCustomers(CUSTOMERS_FILE_PATH);
-            insuranceCards = DataLoader.loadInsuranceCards(INSURANCE_CARDS_FILE_PATH, customers);
-            claims = DataLoader.loadClaims(CLAIMS_FILE_PATH, customers, insuranceCards);
-        } catch (IOException e) {
-            System.err.println("Error loading initial data: " + e.getMessage());
-        }
+    private static void loadInitialData() {
+        // Pass the claimProcessManager instance to each method to ensure they work correctly
+        DataLoader.loadCustomers(claimProcessManager); // Adjusted call
+        DataLoader.loadInsuranceCards(claimProcessManager); // Adjusted call
+        DataLoader.loadClaims(claimProcessManager); // Adjusted call
+        System.out.println("Data loaded successfully.");
     }
+
+    // Continuing from the previous part of App.java
 
     private static void runApplication() {
-        Scanner scanner = new Scanner(System.in);
         boolean running = true;
+
         while (running) {
-            System.out.println("=== Insurance Claims Management System ===");
-            System.out.println("1. View Customers");
-            System.out.println("2. View Insurance Cards");
-            System.out.println("3. View Claims");
-            System.out.println("4. Add New Claim");
-            System.out.println("0. Exit");
+            System.out.println("\n=== Insurance Claims Management System ===");
+            System.out.println("1. View Claims");
+            System.out.println("2. Add New Claim");
+            System.out.println("3. Update a Claim");
+            System.out.println("4. Delete a Claim");
+            System.out.println("5. Get One Claim");
+            System.out.println("6. Save & Exit");
             System.out.print("Enter your choice: ");
+
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            scanner.nextLine(); // Consume newline left-over
 
             switch (choice) {
                 case 1:
-                    viewCustomers();
-                    break;
-                case 2:
-                    viewInsuranceCards();
-                    break;
-                case 3:
                     viewClaims();
                     break;
-                case 4:
-                    addNewClaim(scanner);
+                case 2:
+                    addNewClaim();
                     break;
-                case 0:
+                case 3:
+                    updateClaim();
+                    break;
+                case 4:
+                    deleteClaim();
+                    break;
+                case 5:
+                    getOneClaim();
+                    break;
+                case 6:
                     running = false;
-                    System.out.println("Exiting...");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    break;
             }
         }
         scanner.close();
+        // Adjusted the file path to be more general, not fixed to a specific OS directory structure
+        FileUtil.saveClaims("claims.txt", claimProcessManager.getAll());
+        System.out.println("Changes saved. Exiting application...");
     }
 
-    private static void viewCustomers() {
-        System.out.println("\n=== Customers ===");
-        for (Customer customer : customers) {
-            System.out.println(customer);
-        }
+    private static void getOneClaim() {
     }
 
-    private static void viewInsuranceCards() {
-        System.out.println("\n=== Insurance Cards ===");
-        for (InsuranceCard card : insuranceCards) {
-            System.out.println(card);
-        }
+    private static void deleteClaim() {
     }
 
     private static void viewClaims() {
-        System.out.println("\n=== Claims ===");
-        for (Claim claim : claims) {
-            System.out.println(claim);
-        }
-    }
-
-    private static void addNewClaim(Scanner scanner) {
-        System.out.println("\n=== Adding a new claim ===");
-        try {
-            String claimId = generateClaimId();
-            System.out.print("Enter claim date (yyyy-mm-dd): ");
-            Date claimDate = dateFormat.parse(scanner.nextLine());
-            System.out.print("Enter insured person ID: ");
-            String insuredPersonId = scanner.nextLine();
-            System.out.print("Enter insurance card number: ");
-            String cardNumber = scanner.nextLine();
-            System.out.print("Enter exam date (yyyy-mm-dd): ");
-            Date examDate = dateFormat.parse(scanner.nextLine());
-            System.out.print("Enter claim amount: ");
-            double claimAmount = scanner.nextDouble();
-            scanner.nextLine(); // Consume newline
-            System.out.print("Enter claim status (NEW, PROCESSING, DONE): ");
-            String statusStr = scanner.nextLine().toUpperCase();
-            Claim.Status status = Claim.Status.valueOf(statusStr);
-            System.out.print("Enter receiver banking info: ");
-            String receiverBankingInfo = scanner.nextLine();
-
-            Customer insuredPerson = findCustomerById(insuredPersonId);
-            InsuranceCard insuranceCard = findInsuranceCardByNumber(cardNumber);
-
-            if (insuredPerson != null && insuranceCard != null) {
-                Claim claim = new Claim(claimId, claimDate, insuredPerson, insuranceCard, examDate, claimAmount, status, receiverBankingInfo);
-                claims.add(claim);
-                saveClaimToFile(claim);
-                System.out.println("Claim added successfully.");
-            } else {
-                System.out.println("Invalid insured person ID or insurance card number.");
-            }
-        } catch (ParseException e) {
-            System.err.println("Error parsing date: " + e.getMessage());
-        }
-    }
-
-    private static String generateClaimId() {
-        int index = claims.size() + 1;
-        return "f-" + String.format("%010d", index);
-    }
-
-    private static Customer findCustomerById(String id) {
-        for (Customer customer : customers) {
-            if (customer.getId().equals(id)) {
-                return customer;
+        List<Claim> claims = claimProcessManager.getAll();
+        if (claims.isEmpty()) {
+            System.out.println("No claims found.");
+        } else {
+            for (Claim claim : claims) {
+                System.out.println(claim);
             }
         }
-        return null; // Customer not found
     }
 
-    private static InsuranceCard findInsuranceCardByNumber(String cardNumber) {
-        for (InsuranceCard card : insuranceCards) {
-            if (card.getCardNumber().equals(cardNumber)) {
-                return card;
+    private static void addNewClaim() {
+        System.out.println("Adding a new claim...");
+
+        System.out.print("Enter Claim ID (format f-xxxxxxxxxx): ");
+        String claimId = scanner.nextLine();
+
+        System.out.print("Enter Claim Date (yyyy-MM-dd): ");
+        Date claimDate = parseDate(scanner.nextLine());
+
+        System.out.print("Enter Insured Person's Customer ID: ");
+        String customerId = scanner.nextLine();
+        Customer insuredPerson = claimProcessManager.getCustomerById(customerId);
+
+        System.out.print("Enter Card Number: ");
+        String cardNumber = scanner.nextLine();
+        InsuranceCard insuranceCard = claimProcessManager.getInsuranceCardByNumber(cardNumber);
+
+        System.out.print("Enter Exam Date (yyyy-MM-dd): ");
+        Date examDate = parseDate(scanner.nextLine());
+
+        System.out.print("Enter Claim Amount: ");
+        double claimAmount = Double.parseDouble(scanner.nextLine());
+
+        System.out.print("Enter Claim Status (NEW, PROCESSING, DONE): ");
+        Claim.Status status = Claim.Status.valueOf(scanner.nextLine().toUpperCase());
+
+        System.out.print("Enter Receiver Banking Info: ");
+        String bankingInfo = scanner.nextLine();
+
+        Claim newClaim = new Claim(claimId, claimDate, insuredPerson, insuranceCard, examDate, claimAmount, status, bankingInfo);
+        claimProcessManager.add(newClaim);
+        System.out.println("Claim added successfully.");
+    }
+
+    private static Date parseDate(String nextLine) {
+        return null;
+    }
+
+
+    private static void updateClaim() {
+        System.out.print("Enter the ID of the claim you want to update: ");
+        String claimId = scanner.nextLine();
+        Claim claim = claimProcessManager.getOne(claimId);
+        if (claim == null) {
+            System.out.println("Claim not found.");
+            return;
+        }
+
+        System.out.println("Existing claim details: " + claim);
+        System.out.println("Enter new details for the claim (leave blank to keep current value):");
+
+        System.out.print("New Claim Date (yyyy-MM-dd): ");
+        String newDateStr = scanner.nextLine();
+        if (!newDateStr.isEmpty()) {
+            Date newDate = parseDate(newDateStr);
+            if (newDate != null) {
+                claim.setClaimDate(newDate);
             }
         }
-        return null; // Card not found
+
+        System.out.print("New Claim Amount: ");
+        String newAmountStr = scanner.nextLine();
+        if (!newAmountStr.isEmpty()) {
+            double newAmount = Double.parseDouble(newAmountStr);
+            claim.setClaimAmount(newAmount);
+        }
+
+        System.out.print("New Claim Status (NEW, PROCESSING, DONE): ");
+        String newStatusStr = scanner.nextLine();
+        if (!newStatusStr.isEmpty()) {
+            claim.setStatus(Claim.Status.valueOf(newStatusStr.toUpperCase()));
+        }
+
+        System.out.print("New Receiver Banking Info: ");
+        String newBankingInfo = scanner.nextLine();
+        if (!newBankingInfo.isEmpty()) {
+            claim.setReceiverBankingInfo(newBankingInfo);
+        }
+
+        claimProcessManager.update(claim);
+        System.out.println("Claim updated successfully.");
     }
 
-    private static void saveClaimToFile(Claim claim) {
-        try (FileWriter writer = new FileWriter(CLAIMS_FILE_PATH, true)) {
-            writer.write(claim.toString());
-            writer.write("\n");
-        } catch (IOException e) {
-            System.err.println("Error saving claim to file: " + e.getMessage());
-        }
-    }
 }
