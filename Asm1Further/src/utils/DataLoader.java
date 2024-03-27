@@ -24,16 +24,22 @@ public class DataLoader {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] data = line.split(",");
-                    Customer customer;
-                    if (data[0].startsWith("p-")) {
-                        customer = new PolicyHolder(data[0], data[1]);
-                        claimProcessManager.addCustomer(customer);
-                    } else if (data[0].startsWith("d-")) {
-                        PolicyHolder policyHolder = (PolicyHolder) claimProcessManager.getCustomerById(data[2]);
-                        if(policyHolder != null) {
-                            Dependent dependent = new Dependent(data[0], data[1], policyHolder);
-                            claimProcessManager.addCustomer(dependent);
+
+                    String type = data[0];
+                    String id = data[1];
+                    String name = data[2];
+
+                    if (type.equals("d")) {
+                        Dependent dependent = new Dependent(id, name);
+                        claimProcessManager.addCustomer(dependent);
+                        System.out.println("Created: " + dependent.getId());
+                    } else {
+                        PolicyHolder policyHolder = new PolicyHolder(id, name);
+                        for (int i = 2; i < data.length; i++) {
+                            policyHolder.addDependent((Dependent) claimProcessManager.getCustomerById(data[i]));
                         }
+                        claimProcessManager.addCustomer(policyHolder);
+                        System.out.println("Created: " + policyHolder.getId());
                     }
                 }
             } catch (IOException e) {
@@ -55,7 +61,7 @@ public class DataLoader {
                     // Assume data format is correct and complete
                     String cardNumber = data[0];
                     Customer cardHolder = claimProcessManager.getCustomerById(data[1]);
-                    PolicyHolder policyOwner = (PolicyHolder) claimProcessManager.getCustomerById(data[2]);
+                    String policyOwner = data[2];
                     Date expirationDate = DATE_FORMAT.parse(data[3]);
                     if (cardHolder != null && policyOwner != null) {
                         InsuranceCard insuranceCard = new InsuranceCard(cardNumber, cardHolder, policyOwner, expirationDate);
@@ -87,8 +93,17 @@ public class DataLoader {
                     double claimAmount = Double.parseDouble(data[5]);
                     Claim.Status status = Claim.Status.valueOf(data[6]);
                     String receiverBankingInfo = data[7];
+                    System.out.println("Founded: " + claimId);
+                    System.out.println("Founded: " + claimDate);
+                    System.out.println("Founded: " + insuredPerson.getId());
+                    System.out.println("Founded: " + insuranceCard.getCardNumber());
+                    System.out.println("Founded: " + examDate);
+                    System.out.println("Founded: " + claimAmount);
+                    System.out.println("Founded: " + status);
+                    System.out.println("Founded: " + receiverBankingInfo);
                     if (insuredPerson != null && insuranceCard != null) {
                         Claim claim = new Claim(claimId, claimDate, insuredPerson, insuranceCard, examDate, claimAmount, status, receiverBankingInfo);
+                        System.out.println("claim created!");
                         claimProcessManager.add(claim);
                     }
                 }

@@ -8,7 +8,7 @@ import java.util.Date;
 public class InsuranceCard {
     private String cardNumber; // Unique identifier for the insurance card, consisting of 10 digits
     private Customer cardHolder; // The customer who holds this card
-    private PolicyHolder policyOwner; // The policy holder associated with this card
+    private String policyOwner; // The policy holder associated with this card
     private Date expirationDate; // The expiration date of the insurance card
 
     /**
@@ -19,7 +19,7 @@ public class InsuranceCard {
      * @param policyOwner The policy holder of the card.
      * @param expirationDate The expiration date of the card.
      */
-    public InsuranceCard(String cardNumber, Customer cardHolder, PolicyHolder policyOwner, Date expirationDate) {
+    public InsuranceCard(String cardNumber, Customer cardHolder, String policyOwner, Date expirationDate) {
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
         this.policyOwner = policyOwner;
@@ -44,11 +44,11 @@ public class InsuranceCard {
         this.cardHolder = cardHolder;
     }
 
-    public PolicyHolder getPolicyOwner() {
+    public String getPolicyOwner() {
         return policyOwner;
     }
 
-    public void setPolicyOwner(PolicyHolder policyOwner) {
+    public void setPolicyOwner(String policyOwner) {
         this.policyOwner = policyOwner;
     }
 
@@ -64,8 +64,8 @@ public class InsuranceCard {
     public String toString() {
         return "InsuranceCard{" +
                 "cardNumber='" + cardNumber + '\'' +
-                ", cardHolder='" + (cardHolder != null ? cardHolder.getFullName() : "None") + '\'' +
-                ", policyOwner='" + (policyOwner != null ? policyOwner.getFullName() : "None") + '\'' +
+                ", cardHolder=" + cardHolder +
+                ", policyOwner='" + policyOwner + '\'' +
                 ", expirationDate=" + expirationDate +
                 '}';
     }

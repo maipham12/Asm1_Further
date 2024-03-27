@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ClaimProcessServiceImpl implements ClaimProcessManager {
-
     private final ConcurrentHashMap<String, Claim> claims = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Customer> customers = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, InsuranceCard> insuranceCards = new ConcurrentHashMap<>();

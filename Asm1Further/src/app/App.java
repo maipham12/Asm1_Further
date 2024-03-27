@@ -8,6 +8,7 @@ import utils.FileUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -21,6 +22,7 @@ public class App {
     public static void main(String[] args) {
         loadInitialData();
         runApplication();
+//        System.out.println(LocalDate.parse("2023-03-03"));
     }
 
     private static void loadInitialData() {
@@ -87,12 +89,8 @@ public class App {
 
     private static void viewClaims() {
         List<Claim> claims = claimProcessManager.getAll();
-        if (claims.isEmpty()) {
-            System.out.println("No claims found.");
-        } else {
-            for (Claim claim : claims) {
-                System.out.println(claim);
-            }
+        for (Claim claim : claims) {
+            System.out.println(claim);
         }
     }
 
@@ -130,8 +128,9 @@ public class App {
         System.out.println("Claim added successfully.");
     }
 
-    private static Date parseDate(String nextLine) {
-        return null;
+    private static Date parseDate(String date) {
+        return new Date(date);
+        // tìm cách để parse "2023-03-03" thành Date
     }
 
 
