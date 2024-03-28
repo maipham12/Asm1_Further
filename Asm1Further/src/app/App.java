@@ -33,8 +33,6 @@ public class App {
         System.out.println("Data loaded successfully.");
     }
 
-    // Continuing from the previous part of App.java
-
     private static void runApplication() {
         boolean running = true;
 

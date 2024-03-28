@@ -12,8 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DataLoader {
-
-    // This method reads customer data from a file and adds customers to the system
     public static void loadCustomers(ClaimProcessManager claimProcessManager) {
         InputStream customerStream = DataLoader.class.getClassLoader().getResourceAsStream("customers.txt");
 
@@ -47,7 +45,6 @@ public class DataLoader {
             }
         }
     }
-    // This method reads insurance card data from a file and adds insurance cards to the system
     public static void loadInsuranceCards(ClaimProcessManager claimProcessManager) {
         InputStream cardStream = DataLoader.class.getClassLoader().getResourceAsStream("insuranceCards.txt");
 
@@ -73,7 +70,6 @@ public class DataLoader {
             }
         }
     }
-    // This method reads claim data from a file and adds claims to the system
     public static void loadClaims(ClaimProcessManager claimProcessManager) {
         InputStream claimStream = DataLoader.class.getClassLoader().getResourceAsStream("claims.txt");
 
