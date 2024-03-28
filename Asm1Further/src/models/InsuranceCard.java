@@ -1,25 +1,15 @@
 package models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-/**
- * Represents an insurance card in the insurance system.
- */
 public class InsuranceCard {
-    private String cardNumber; // Unique identifier for the insurance card, consisting of 10 digits
+    private String cardNumber; // Unique identifier for the insurance card
     private Customer cardHolder; // The customer who holds this card
     private String policyOwner; // The policy holder associated with this card
-    private Date expirationDate; // The expiration date of the insurance card
+    private LocalDate expirationDate; // The expiration date of the insurance card
 
-    /**
-     * Constructs a new InsuranceCard instance.
-     *
-     * @param cardNumber The card number.
-     * @param cardHolder The customer holding the card.
-     * @param policyOwner The policy holder of the card.
-     * @param expirationDate The expiration date of the card.
-     */
-    public InsuranceCard(String cardNumber, Customer cardHolder, String policyOwner, Date expirationDate) {
+    // Constructor
+    public InsuranceCard(String cardNumber, Customer cardHolder, String policyOwner, LocalDate expirationDate) {
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
         this.policyOwner = policyOwner;
@@ -27,7 +17,6 @@ public class InsuranceCard {
     }
 
     // Getters and Setters
-
     public String getCardNumber() {
         return cardNumber;
     }
@@ -52,11 +41,11 @@ public class InsuranceCard {
         this.policyOwner = policyOwner;
     }
 
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -64,7 +53,7 @@ public class InsuranceCard {
     public String toString() {
         return "InsuranceCard{" +
                 "cardNumber='" + cardNumber + '\'' +
-                ", cardHolder=" + cardHolder +
+                ", cardHolder=" + (cardHolder != null ? cardHolder.getFullName() : "None") +
                 ", policyOwner='" + policyOwner + '\'' +
                 ", expirationDate=" + expirationDate +
                 '}';

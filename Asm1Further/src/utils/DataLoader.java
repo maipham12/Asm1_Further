@@ -4,14 +4,15 @@ import models.*;
 import services.ClaimProcessManager;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DataLoader {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     public static void loadCustomers(ClaimProcessManager claimProcessManager) {
         InputStream customerStream = DataLoader.class.getClassLoader().getResourceAsStream("customers.txt");
 
@@ -33,8 +34,12 @@ public class DataLoader {
                         System.out.println("Created: " + dependent.getId());
                     } else {
                         PolicyHolder policyHolder = new PolicyHolder(id, name);
-                        for (int i = 2; i < data.length; i++) {
-                            policyHolder.addDependent((Dependent) claimProcessManager.getCustomerById(data[i]));
+                        // Assuming the PolicyHolder has dependents listed starting from index 3
+                        for (int i = 3; i < data.length; i++) {
+                            Dependent dependent = (Dependent) claimProcessManager.getCustomerById(data[i]);
+                            if (dependent != null) {
+                                policyHolder.addDependent(dependent);
+                            }
                         }
                         claimProcessManager.addCustomer(policyHolder);
                         System.out.println("Created: " + policyHolder.getId());
@@ -55,21 +60,24 @@ public class DataLoader {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] data = line.split(",");
-                    // Assume data format is correct and complete
                     String cardNumber = data[0];
                     Customer cardHolder = claimProcessManager.getCustomerById(data[1]);
                     String policyOwner = data[2];
-                    Date expirationDate = DATE_FORMAT.parse(data[3]);
+                    LocalDate expirationDate = LocalDate.parse(data[3], DATE_FORMAT);
                     if (cardHolder != null && policyOwner != null) {
                         InsuranceCard insuranceCard = new InsuranceCard(cardNumber, cardHolder, policyOwner, expirationDate);
                         claimProcessManager.addInsuranceCard(insuranceCard);
+                        System.out.println("Loaded Insurance Card: " + cardNumber);
                     }
                 }
-            } catch (IOException | ParseException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
+    // ... continuation of DataLoader class ...
+
     public static void loadClaims(ClaimProcessManager claimProcessManager) {
         InputStream claimStream = DataLoader.class.getClassLoader().getResourceAsStream("claims.txt");
 
@@ -80,34 +88,24 @@ public class DataLoader {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] data = line.split(",");
-                    // Assume data format is correct and complete
                     String claimId = data[0];
-                    Date claimDate = DATE_FORMAT.parse(data[1]);
+                    LocalDate claimDate = LocalDate.parse(data[1], DATE_FORMAT);
                     Customer insuredPerson = claimProcessManager.getCustomerById(data[2]);
                     InsuranceCard insuranceCard = claimProcessManager.getInsuranceCardByNumber(data[3]);
-                    Date examDate = DATE_FORMAT.parse(data[4]);
+                    LocalDate examDate = LocalDate.parse(data[4], DATE_FORMAT);
                     double claimAmount = Double.parseDouble(data[5]);
                     Claim.Status status = Claim.Status.valueOf(data[6]);
                     String receiverBankingInfo = data[7];
-                    System.out.println("Founded: " + claimId);
-                    System.out.println("Founded: " + claimDate);
-                    System.out.println("Founded: " + insuredPerson.getId());
-                    System.out.println("Founded: " + insuranceCard.getCardNumber());
-                    System.out.println("Founded: " + examDate);
-                    System.out.println("Founded: " + claimAmount);
-                    System.out.println("Founded: " + status);
-                    System.out.println("Founded: " + receiverBankingInfo);
+
                     if (insuredPerson != null && insuranceCard != null) {
                         Claim claim = new Claim(claimId, claimDate, insuredPerson, insuranceCard, examDate, claimAmount, status, receiverBankingInfo);
-                        System.out.println("claim created!");
-                        claimProcessManager.add(claim);
+                        claimProcessManager.add(claim); // This is the correct method call
+                        System.out.println("Loaded Claim: " + claimId);
                     }
                 }
-            } catch (IOException | ParseException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 }
