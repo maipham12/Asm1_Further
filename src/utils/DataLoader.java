@@ -76,8 +76,6 @@ public class DataLoader {
         }
     }
 
-    // ... continuation of DataLoader class ...
-
     public static void loadClaims(ClaimProcessManager claimProcessManager) {
         InputStream claimStream = DataLoader.class.getClassLoader().getResourceAsStream("claims.txt");
 
@@ -99,7 +97,7 @@ public class DataLoader {
 
                     if (insuredPerson != null && insuranceCard != null) {
                         Claim claim = new Claim(claimId, claimDate, insuredPerson, insuranceCard, examDate, claimAmount, status, receiverBankingInfo);
-                        claimProcessManager.add(claim); // This is the correct method call
+                        claimProcessManager.add(claim);
                         System.out.println("Loaded Claim: " + claimId);
                     }
                 }

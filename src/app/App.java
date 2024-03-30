@@ -160,6 +160,4 @@ public class App {
             System.out.println("Claim with ID " + claimId + " not found.");
         }
     }
-
-    // Other utility methods if necessary...
 }

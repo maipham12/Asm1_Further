@@ -3,20 +3,19 @@ package models;
 import java.time.LocalDate;
 
 public class Claim {
-    private String claimId; // Unique identifier for the claim
-    private LocalDate claimDate; // The date the claim was filed
-    private Customer insuredPerson; // The customer the claim is for
-    private InsuranceCard insuranceCard; // The insurance card used for the claim
-    private LocalDate examDate; // The date of the medical examination
-    private double claimAmount; // The amount being claimed
-    private Status status; // The current status of the claim
-    private String receiverBankingInfo; // Banking info for claim payment
+    private String claimId;
+    private LocalDate claimDate;
+    private Customer insuredPerson;
+    private InsuranceCard insuranceCard;
+    private LocalDate examDate;
+    private double claimAmount;
+    private Status status;
+    private String receiverBankingInfo;
 
     public enum Status {
         NEW, PROCESSING, DONE
     }
 
-    // Constructor
     public Claim(String claimId, LocalDate claimDate, Customer insuredPerson,
                  InsuranceCard insuranceCard, LocalDate examDate, double claimAmount,
                  Status status, String receiverBankingInfo) {
@@ -30,7 +29,6 @@ public class Claim {
         this.receiverBankingInfo = receiverBankingInfo;
     }
 
-    // Getters and setters for claimId, claimDate, and examDate
     public String getClaimId() {
         return claimId;
     }
@@ -54,8 +52,6 @@ public class Claim {
     public void setExamDate(LocalDate examDate) {
         this.examDate = examDate;
     }
-
-    // ... continuation of Claim class ...
 
     public Customer getInsuredPerson() {
         return insuredPerson;

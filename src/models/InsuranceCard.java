@@ -3,12 +3,11 @@ package models;
 import java.time.LocalDate;
 
 public class InsuranceCard {
-    private String cardNumber; // Unique identifier for the insurance card
-    private Customer cardHolder; // The customer who holds this card
-    private String policyOwner; // The policy holder associated with this card
-    private LocalDate expirationDate; // The expiration date of the insurance card
+    private String cardNumber;
+    private Customer cardHolder;
+    private String policyOwner;
+    private LocalDate expirationDate;
 
-    // Constructor
     public InsuranceCard(String cardNumber, Customer cardHolder, String policyOwner, LocalDate expirationDate) {
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
@@ -16,7 +15,6 @@ public class InsuranceCard {
         this.expirationDate = expirationDate;
     }
 
-    // Getters and Setters
     public String getCardNumber() {
         return cardNumber;
     }

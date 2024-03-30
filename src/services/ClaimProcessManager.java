@@ -6,7 +6,6 @@ import models.InsuranceCard;
 import java.util.List;
 
 public interface ClaimProcessManager {
-    // ... existing methods ...
 
     void addCustomer(Customer customer);
 
@@ -26,5 +25,4 @@ public interface ClaimProcessManager {
     List<Claim> getAll();
 
     List<InsuranceCard> getAllInsuranceCards();
-    // Any other methods needed for your implementation
 }
