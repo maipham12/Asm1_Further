@@ -44,7 +44,7 @@ public class App {
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline left-over
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -71,12 +71,12 @@ public class App {
             }
         }
         scanner.close();
-        FileUtil.saveClaims("claims.txt", claimProcessManager.getAll()); // Corrected to match the interface method name
+        FileUtil.saveClaims("claims.txt", claimProcessManager.getAll());
         System.out.println("Changes saved. Exiting application...");
     }
 
     private static void viewClaims() {
-        List<Claim> claims = claimProcessManager.getAll(); // Corrected to match the interface method name
+        List<Claim> claims = claimProcessManager.getAll();
         for (Claim claim : claims) {
             System.out.println(claim);
         }
@@ -112,7 +112,7 @@ public class App {
         String bankingInfo = scanner.nextLine();
 
         Claim newClaim = new Claim(claimId, claimDate, insuredPerson, insuranceCard, examDate, claimAmount, status, bankingInfo);
-        claimProcessManager.add(newClaim); // Make sure this method name matches the one in the interface
+        claimProcessManager.add(newClaim);
         System.out.println("Claim added successfully.");
     }
 
@@ -128,8 +128,6 @@ public class App {
                 LocalDate newClaimDate = LocalDate.parse(newClaimDateStr, dateFormat);
                 claimToUpdate.setClaimDate(newClaimDate);
             }
-            // Similar blocks for updating other fields of the claim...
-            // After all updates are done:
             claimProcessManager.update(claimToUpdate);
             System.out.println("Claim updated successfully.");
         } else {
