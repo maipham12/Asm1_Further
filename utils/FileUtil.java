@@ -1,5 +1,9 @@
 package utils;
 
+/**
+ @author <Pham Thanh Mai - s3978365>
+ **/
+
 import models.Claim;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

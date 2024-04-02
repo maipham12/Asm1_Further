@@ -1,5 +1,9 @@
 package services;
 
+/**
+ @author <Pham Thanh Mai - s3978365>
+ **/
+
 import models.Claim;
 import models.Customer;
 import models.InsuranceCard;

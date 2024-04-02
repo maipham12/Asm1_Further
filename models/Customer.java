@@ -1,5 +1,9 @@
 package models;
 
+/**
+ @author <Pham Thanh Mai - s3978365>
+ **/
+
 public abstract class Customer {
     protected String id;
     protected String fullName;

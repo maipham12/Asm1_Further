@@ -1,5 +1,9 @@
 package models;
 
+/**
+ @author <Pham Thanh Mai - s3978365>
+ **/
+
 import java.time.LocalDate;
 
 public class Claim {

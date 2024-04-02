@@ -1,5 +1,9 @@
 package utils;
 
+/**
+ @author <Pham Thanh Mai - s3978365>
+ **/
+
 import models.*;
 import services.ClaimProcessManager;
 

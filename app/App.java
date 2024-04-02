@@ -1,5 +1,9 @@
 package app;
 
+/**
+ @author <Pham Thanh Mai - s3978365>
+ **/
+
 import models.Claim;
 import models.Customer;
 import models.InsuranceCard;
@@ -7,7 +11,6 @@ import services.ClaimProcessManager;
 import services.ClaimProcessServiceImpl;
 import utils.DataLoader;
 import utils.FileUtil;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
