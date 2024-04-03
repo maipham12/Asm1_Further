@@ -80,8 +80,24 @@ public class App {
 
     private static void viewClaims() {
         List<Claim> claims = claimProcessManager.getAll();
+        if (claims.isEmpty()) {
+            System.out.println("No claims available.");
+            return;
+        }
+
+        System.out.printf("%-15s %-15s %-20s %-15s %-15s %-10s %-10s %-20s%n",
+                "Claim ID", "Claim Date", "Insured Person", "Card Number", "Exam Date", "Amount", "Status", "Banking Info");
+
         for (Claim claim : claims) {
-            System.out.println(claim);
+            System.out.printf("%-15s %-15s %-20s %-15s %-15s %-10.2f %-10s %-20s%n",
+                    claim.getClaimId(),
+                    claim.getClaimDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    claim.getInsuredPerson().getFullName(),
+                    claim.getInsuranceCard().getCardNumber(),
+                    claim.getExamDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    claim.getClaimAmount(),
+                    claim.getStatus(),
+                    claim.getReceiverBankingInfo());
         }
     }
 
