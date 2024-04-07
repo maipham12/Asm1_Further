@@ -5,6 +5,7 @@ package models;
  **/
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class InsuranceCard {
     private String cardNumber;
@@ -53,11 +54,13 @@ public class InsuranceCard {
 
     @Override
     public String toString() {
-        return "InsuranceCard{" +
-                "cardNumber='" + cardNumber + '\'' +
-                ", cardHolder=" + (cardHolder != null ? cardHolder.getFullName() : "None") +
-                ", policyOwner='" + policyOwner + '\'' +
-                ", expirationDate=" + expirationDate +
-                '}';
+        // Assuming 'None' is used if there is no card holder.
+        return String.format("%s,%s,%s,%s",
+                this.getCardNumber(),
+                this.getCardHolder() != null ? this.getCardHolder().getId() : "None",
+                this.getPolicyOwner(),
+                this.getExpirationDate().format(DateTimeFormatter.ISO_LOCAL_DATE)); // or use DATE_FORMAT if defined elsewhere
     }
+
+
 }

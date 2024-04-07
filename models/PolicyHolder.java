@@ -27,11 +27,13 @@ public class PolicyHolder extends Customer {
 
     @Override
     public String toString() {
-        return "PolicyHolder{" +
-                "id='" + getId() + '\'' +
-                ", fullName='" + getFullName() + '\'' +
-                ", insuranceCard=" + (getInsuranceCard() != null ? getInsuranceCard().getCardNumber() : "None") +
-                ", dependents=" + dependents.size() +
-                '}';
+        // Start with the policyholder's info
+        StringBuilder sb = new StringBuilder(String.format("p,%s,%s", this.getId(), this.getFullName()));
+        // Add dependent IDs
+        for (Dependent dependent : this.getDependents()) {
+            sb.append(",").append(dependent.getId());
+        }
+        return sb.toString();
     }
+
 }

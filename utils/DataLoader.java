@@ -6,7 +6,6 @@ package utils;
 
 import models.*;
 import services.ClaimProcessManager;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +15,30 @@ import java.time.format.DateTimeFormatter;
 
 public class DataLoader {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    public static void loadInsuranceCards(ClaimProcessManager claimProcessManager) {
+        InputStream insuranceCardStream = DataLoader.class.getClassLoader().getResourceAsStream("insuranceCards.txt");
+
+        if (insuranceCardStream == null) {
+            throw new IllegalArgumentException("File not found: insuranceCards.txt");
+        } else {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(insuranceCardStream))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] data = line.split(",");
+                    String cardNumber = data[0];
+                    Customer cardHolder = claimProcessManager.getCustomerById(data[1]);
+                    String policyOwner = data[2];
+                    LocalDate expirationDate = LocalDate.parse(data[3], DATE_FORMAT);
+                    InsuranceCard insuranceCard = new InsuranceCard(cardNumber, cardHolder, policyOwner, expirationDate);
+                    claimProcessManager.addInsuranceCard(insuranceCard);
+                    System.out.println("Loaded Insurance Card: " + cardNumber);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static void loadCustomers(ClaimProcessManager claimProcessManager) {
         InputStream customerStream = DataLoader.class.getClassLoader().getResourceAsStream("customers.txt");
@@ -47,31 +70,6 @@ public class DataLoader {
                         }
                         claimProcessManager.addCustomer(policyHolder);
                         System.out.println("Created: " + policyHolder.getId());
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    public static void loadInsuranceCards(ClaimProcessManager claimProcessManager) {
-        InputStream cardStream = DataLoader.class.getClassLoader().getResourceAsStream("insuranceCards.txt");
-
-        if (cardStream == null) {
-            throw new IllegalArgumentException("File not found: insuranceCards.txt");
-        } else {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(cardStream))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] data = line.split(",");
-                    String cardNumber = data[0];
-                    Customer cardHolder = claimProcessManager.getCustomerById(data[1]);
-                    String policyOwner = data[2];
-                    LocalDate expirationDate = LocalDate.parse(data[3], DATE_FORMAT);
-                    if (cardHolder != null && policyOwner != null) {
-                        InsuranceCard insuranceCard = new InsuranceCard(cardNumber, cardHolder, policyOwner, expirationDate);
-                        claimProcessManager.addInsuranceCard(insuranceCard);
-                        System.out.println("Loaded Insurance Card: " + cardNumber);
                     }
                 }
             } catch (IOException e) {

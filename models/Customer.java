@@ -40,10 +40,10 @@ public abstract class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", insuranceCard=" + (insuranceCard != null ? insuranceCard.getCardNumber() : "None") +
-                '}';
+        // Assuming 'None' is used if there is no insurance card.
+        return String.format("d,%s,%s",
+                this.getId(),
+                this.getFullName());
     }
+
 }

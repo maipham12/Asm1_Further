@@ -27,6 +27,5 @@ public interface ClaimProcessManager {
     boolean delete(String claimId);
     Claim getOne(String claimId);
     List<Claim> getAll();
-
     List<InsuranceCard> getAllInsuranceCards();
 }

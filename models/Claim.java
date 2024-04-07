@@ -5,8 +5,10 @@ package models;
  **/
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Claim {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private String claimId;
     private LocalDate claimDate;
     private Customer insuredPerson;
@@ -99,17 +101,14 @@ public class Claim {
 
     @Override
     public String toString() {
-        return "Claim{" +
-                "claimId='" + claimId + '\'' +
-                ", claimDate=" + claimDate +
-                ", insuredPerson=" + (insuredPerson != null ? insuredPerson.getFullName() : "None") +
-                ", insuranceCard=" + (insuranceCard != null ? insuranceCard.getCardNumber() : "None") +
-                ", examDate=" + examDate +
-                ", claimAmount=" + claimAmount +
-                ", status=" + status +
-                ", receiverBankingInfo='" + receiverBankingInfo + '\'' +
-                '}';
+        return claimId + "," +
+                claimDate.format(formatter) + "," +
+                (insuredPerson != null ? insuredPerson.getId() : "null") + "," +
+                (insuranceCard != null ? insuranceCard.getCardNumber() : "null") + "," +
+                examDate.format(formatter) + "," +
+                claimAmount + "," +
+                status + "," +
+                receiverBankingInfo;
     }
 }
-
 
