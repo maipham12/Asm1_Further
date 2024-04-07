@@ -1,9 +1,5 @@
 package services;
 
-/**
- @author <Pham Thanh Mai - s3978365>
- **/
-
 import models.Claim;
 import models.Customer;
 import models.InsuranceCard;
@@ -19,111 +15,92 @@ public class ClaimProcessServiceImpl implements ClaimProcessManager {
     private final LinkedHashMap<String, Customer> customers = new LinkedHashMap<>();
     private final LinkedHashMap<String, InsuranceCard> insuranceCards = new LinkedHashMap<>();
 
-    // Method to add a customer
     @Override
     public void addCustomer(Customer customer) {
         if (customer != null && customer.getId() != null) {
             customers.put(customer.getId(), customer);
-            writeCustomersToFile(); // Call the method to write data to file after adding a new customer
+            writeCustomersToFile();
         }
     }
 
-    // Method to get a customer by ID
     @Override
     public Customer getCustomerById(String customerId) {
         return customers.get(customerId);
     }
 
-    // Method to get all customers
     @Override
     public List<Customer> getAllCustomers() {
         return new ArrayList<>(customers.values());
     }
-    // Method to add an insurance card
+
     @Override
     public void addInsuranceCard(InsuranceCard insuranceCard) {
         if (insuranceCard != null && insuranceCard.getCardNumber() != null) {
             insuranceCards.put(insuranceCard.getCardNumber(), insuranceCard);
-            writeInsuranceCardsToFile(); // Call the method to write data to file after adding a new card
+            writeInsuranceCardsToFile();
         }
     }
 
-    // Method to get an insurance card by number
     @Override
     public InsuranceCard getInsuranceCardByNumber(String cardNumber) {
         return insuranceCards.get(cardNumber);
     }
 
-    // Method to get all insurance cards
     @Override
     public List<InsuranceCard> getAllInsuranceCards() {
         return new ArrayList<>(insuranceCards.values());
     }
 
-    // Method to add a claim
     @Override
     public void add(Claim claim) {
         if (claim != null && claim.getClaimId() != null) {
             claims.put(claim.getClaimId(), claim);
-            writeClaimsToFile(); // Call the method to write data to file after adding a new claim
+            writeClaimsToFile();
         }
     }
 
-    // Method to update a claim
     @Override
-    public void update(Claim claim) {
-        if (claim != null && claim.getClaimId() != null && claims.containsKey(claim.getClaimId())) {
-            claims.put(claim.getClaimId(), claim);
-            writeClaimsToFile(); // Update the file after modifying a claim
+    public void update(Claim updatedClaim) {
+        if (updatedClaim != null && updatedClaim.getClaimId() != null) {
+            Claim existingClaim = claims.get(updatedClaim.getClaimId());
+            if (existingClaim != null) {
+                existingClaim.setClaimDate(updatedClaim.getClaimDate());
+                existingClaim.setStatus(updatedClaim.getStatus());
+                // Consider updating other fields as necessary
+
+                claims.put(existingClaim.getClaimId(), existingClaim);
+                writeClaimsToFile();
+            }
         }
     }
 
-    // Method to delete a claim by ID
     @Override
     public boolean delete(String claimId) {
         if (claimId != null && claims.remove(claimId) != null) {
-            writeClaimsToFile(); // Update the file after a claim is deleted
+            writeClaimsToFile();
             return true;
         }
         return false;
     }
 
-    // Method to get one claim by ID
     @Override
     public Claim getOne(String claimId) {
         return claims.get(claimId);
     }
 
-    // Method to get all claims
     @Override
     public List<Claim> getAll() {
         return new ArrayList<>(claims.values());
     }
-    // Method to write all customers to a file
+
     private void writeCustomersToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("customers.txt"))) {
-            for (Customer customer : customers.values()) {
-                writer.write(customer.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Implement file writing logic for customers
     }
 
-    // Method to write all insurance cards to a file
     private void writeInsuranceCardsToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("insuranceCards.txt"))) {
-            for (InsuranceCard card : insuranceCards.values()) {
-                writer.write(card.toString());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Implement file writing logic for insurance cards
     }
 
-    // Method to write all claims to a file
     private void writeClaimsToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("claims.txt"))) {
             for (Claim claim : claims.values()) {

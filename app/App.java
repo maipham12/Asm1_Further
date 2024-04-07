@@ -147,12 +147,26 @@ public class App {
                 LocalDate newClaimDate = LocalDate.parse(newClaimDateStr, dateFormat);
                 claimToUpdate.setClaimDate(newClaimDate);
             }
+
+            // New section for updating claim status
+            System.out.print("Enter new Claim Status (NEW, PROCESSING, DONE) or press enter to skip: ");
+            String newStatusStr = scanner.nextLine();
+            if (!newStatusStr.isEmpty()) {
+                try {
+                    Claim.Status newStatus = Claim.Status.valueOf(newStatusStr.toUpperCase());
+                    claimToUpdate.setStatus(newStatus);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid status entered. Skipping status update.");
+                }
+            }
+
             claimProcessManager.update(claimToUpdate);
             System.out.println("Claim updated successfully.");
         } else {
             System.out.println("Claim with ID " + claimId + " not found.");
         }
     }
+
 
     private static void deleteClaim() {
         System.out.print("Enter the ID of the claim you want to delete: ");
