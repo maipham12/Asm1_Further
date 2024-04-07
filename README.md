@@ -11,7 +11,7 @@ The system is designed for Admin, and it contains 5 features as below:
 5. Get One Claim
 6. Save & Exit
 
-When you want to Add a New Claim, make sure that you use the correct format and data. You can use the sample data as follow to add:
+When you want to Add a New Claim, make sure that you use the correct format and data. You can use the sample data as follows to add:
 1. f-0000000016
 2. 2023-03-31
 3. c-0000015
@@ -22,3 +22,5 @@ When you want to Add a New Claim, make sure that you use the correct format and 
 8. BankIJK-798132
 
 For other features, ensure you have the correct Claim ID (eg. f-0000000015). 
+
+Be aware that after using any feature, you must choose Save & Exit (End the app) before seeing the update in the text file.
